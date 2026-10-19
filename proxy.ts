@@ -9,6 +9,11 @@ export async function proxy(request: NextRequest) {
     return new Response("pong", { status: 200 });
   }
 
+  // Public synthetic demo only; no API or customer data is exposed here.
+  if (pathname === "/support-demo") {
+    return NextResponse.next();
+  }
+
   if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }

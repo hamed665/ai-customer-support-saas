@@ -1,0 +1,10 @@
+Customer Support Workspace
+Additional support workspace code and documentation Copyright 2026 Hamed Minaei.
+
+Derived from Vercel Chatbot, https://github.com/vercel/chatbot
+Upstream baseline: c2f8235e1f3ea903ad8b7f61447c4f74164b5c58
+Copyright 2024 Vercel, Inc.
+Licensed under the Apache License, Version 2.0. Original LICENSE retained.
+
+Modified/additional files and limitations are described in README.md.
+No endorsement by Vercel is implied. Third-party dependencies retain their own licenses.

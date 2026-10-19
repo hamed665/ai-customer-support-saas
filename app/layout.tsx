@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
+import { AppSessionProvider } from "@/components/support/app-session-provider";
 
 export const metadata: Metadata = {
   description: "Next.js chatbot template using the AI SDK.",
@@ -74,11 +75,13 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          <SessionProvider
-            basePath={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/auth`}
-          >
-            <TooltipProvider>{children}</TooltipProvider>
-          </SessionProvider>
+          <Suspense fallback={<p role="status">Loading workspace…</p>}>
+            <AppSessionProvider
+              basePath={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/auth`}
+            >
+              <TooltipProvider>{children}</TooltipProvider>
+            </AppSessionProvider>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
