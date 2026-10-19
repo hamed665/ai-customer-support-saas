@@ -26,14 +26,14 @@ The baseline worktree initially used a node_modules symlink, which Turbopack rej
 | Added files / proxy lint | PASS: Biome targeted checks |
 | Optimized application build | PASS: `pnpm exec next build`; new `/support-demo` statically rendered |
 | Built-server smoke | PASS: `/support-demo` HTTP 200 with expected HTML; existing `/` HTTP 307 |
-| Browser tests | BLOCKED: all 5 attempts failed at browser launch because Chromium executable is absent; no application assertions ran |
+| Browser tests | PASS in GitHub CI: all 5 browser cases. Local browser launch was blocked by missing Chromium. |
 | Browser installation | BLOCKED: `playwright install chromium` download failed in this environment |
-| Screenshots | NOT GENERATED; screenshot-producing tests are included, but no visual QA is claimed |
+| Screenshots | PASS: four real viewport screenshots committed in screenshots/ and visually inspected. |
 | External LLM / real operator transport | NOT IMPLEMENTED for added workspace |
 | Hosted demo | NOT DEPLOYED; unresolved critical dependency / license findings |
-| GitHub PR / remote CI | BLOCKED: GitHub connector exposes no repository-create/fork operation; publication needs another authorized route |
+| GitHub PR / remote CI | Published: Draft PR #1; latest implementation run 39250345600 verify job passed, dependency-security failed. |
 
-Runtime used Node 24.19.0 and the environment-provided pnpm 11.25.0 fallback. Repository and CI pin pnpm 10.32.1; remote CI must confirm that exact toolchain. No result is represented as CI-verified.
+Runtime used Node 24.19.0 and the environment-provided pnpm 11.25.0 fallback. Repository and CI pin pnpm 10.32.1; remote CI confirmed the pinned toolchain as detailed below.
 
 The UI uses the upstream React Compiler. Its native DOM event handlers have one documented file-level Biome exception for `noJsxPropsBind`; all other targeted checks remain enabled.
 
@@ -45,4 +45,4 @@ Run the commands in the main README. Unit tests are independent of network, data
 
 Published as https://github.com/hamed665/ai-customer-support-saas/pull/1 (Draft). Run https://github.com/hamed665/ai-customer-support-saas/actions/runs/39249234636 completed the `verify` job successfully using pnpm 10.32.1 / Node 24.21.0, including all 18 policy tests and all 5 browser cases. Four real screenshots were downloaded from artifact 12184368401 and retained in `screenshots/`. The dependency-security job failed as expected. These results supersede the earlier local-only browser/publication blockers.
 
-CI exposed harmless upstream auth-session requests on the public demo (MissingSecret). A route-aware provider now omits the auth provider only on the exact synthetic demo path; upstream auth pages keep it. The original upstream lint workflow also caught formatting in the new smoke script/inventory; full `pnpm check` now passes locally after correction. Later commits require their own CI confirmation.
+CI exposed harmless upstream auth-session requests on the public demo (MissingSecret). A route-aware provider now omits the auth provider only on the exact synthetic demo path; upstream auth pages keep it. The original upstream lint workflow also caught formatting in the new smoke script/inventory; full `pnpm check` now passes locally after correction. Latest implementation commit 43710341d87d27927407f75deef02bc82b31c3a4 was inspected: run 39250345600 verify passed; dependency-security failed. The inherited Playwright Tests workflow run 39250345648 was cancelled, and is not counted as a passing result. This follow-up changes documentation only.
