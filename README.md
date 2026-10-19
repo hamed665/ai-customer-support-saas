@@ -87,12 +87,14 @@ The 18 policy tests exercise multilingual citations, business isolation, ambigui
 
 ## Demo
 
-Follow [the repeatable walkthrough](docs/support/DEMO.md). Live hosting is blocked by the security findings. Browser screenshots have not been generated locally because Chromium installation failed; the Playwright suite produces actual screenshots when a browser is available. No mock image is presented as an application screenshot.
+Follow [the repeatable walkthrough](docs/support/DEMO.md). Live hosting is blocked by the security findings. All five browser cases passed in GitHub Actions. Actual screenshots are stored in `docs/support/screenshots/` (320/768/1024/1440px). Local Chromium installation remains unavailable. No mock image is presented as an application screenshot.
+
+![Support workspace — actual CI browser capture](docs/support/screenshots/support-1440.png)
 
 ## Attribution
 
 Based on `vercel/chatbot` commit `c2f8235e1f3ea903ad8b7f61447c4f74164b5c58`, upstream commit date 2026-07-08. The complete upstream Git history and original [Apache 2.0 license notice](LICENSE) are retained. Upstream code remains Copyright 2024 Vercel, Inc.
 
-Hamed Minaei's additions: `app/support-demo/**`, `lib/support/**`, support tests and scripts, support CI workflow and `docs/support/**`. Modified upstream files: `proxy.ts` (exact public synthetic demo route), `package.json` (verification scripts), `.env.example` (optional-service guidance), and this README. The original README is preserved in `docs/UPSTREAM_README.md`. No upstream authorship or contribution dates have been rewritten.
+Hamed Minaei's additions: `app/support-demo/**`, `lib/support/**`, support tests and scripts, support CI workflow and `docs/support/**`. Modified upstream files: `app/layout.tsx` and `components/support/app-session-provider.tsx` (avoid auth-session requests on the synthetic demo only), `proxy.ts` (exact public synthetic demo route), `package.json` (verification scripts), `.env.example` (optional-service guidance), and this README. The original README is preserved in `docs/UPSTREAM_README.md`. No upstream authorship or contribution dates have been rewritten.
 
 These additions are licensed under Apache-2.0; dependency licenses remain their respective authors' licenses. This project is not endorsed by Vercel. See [NOTICE](NOTICE).

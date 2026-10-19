@@ -40,3 +40,9 @@ The UI uses the upstream React Compiler. Its native DOM event handlers have one 
 ## Reproduction
 
 Run the commands in the main README. Unit tests are independent of network, database and API keys. Build may need network access to fetch the inherited Google fonts. HTTP smoke starts and terminates its own built server. Browser tests require a successful Chromium installation and produce viewport screenshots as CI artifacts. Security checks must remain blocking until dependencies are remediated.
+
+## GitHub verification follow-up
+
+Published as https://github.com/hamed665/ai-customer-support-saas/pull/1 (Draft). Run https://github.com/hamed665/ai-customer-support-saas/actions/runs/39249234636 completed the `verify` job successfully using pnpm 10.32.1 / Node 24.21.0, including all 18 policy tests and all 5 browser cases. Four real screenshots were downloaded from artifact 12184368401 and retained in `screenshots/`. The dependency-security job failed as expected. These results supersede the earlier local-only browser/publication blockers.
+
+CI exposed harmless upstream auth-session requests on the public demo (MissingSecret). A route-aware provider now omits the auth provider only on the exact synthetic demo path; upstream auth pages keep it. The original upstream lint workflow also caught formatting in the new smoke script/inventory; full `pnpm check` now passes locally after correction. Later commits require their own CI confirmation.
