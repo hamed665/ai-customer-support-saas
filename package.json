@@ -16,7 +16,12 @@
     "db:pull": "drizzle-kit pull",
     "db:check": "drizzle-kit check",
     "db:up": "drizzle-kit up",
-    "test": "export PLAYWRIGHT=True && pnpm exec playwright test"
+    "test": "export PLAYWRIGHT=True && pnpm exec playwright test",
+    "test:support": "node --import tsx --test tests/support/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "demo:support": "next dev --hostname 127.0.0.1 --port 3100",
+    "test:support:smoke": "node scripts/support-smoke.mjs",
+    "test:support:e2e": "playwright test --config playwright.support.config.ts"
   },
   "dependencies": {
     "@ai-sdk/otel": "^1.0.15",

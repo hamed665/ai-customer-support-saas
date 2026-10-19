@@ -1,0 +1,48 @@
+name: Support workspace
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm test:support
+      - run: pnpm typecheck
+      - run: pnpm exec biome check lib/support app/support-demo tests/support proxy.ts
+      - run: pnpm exec next build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+      - run: pnpm test:support:smoke
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:support:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: support-browser-results
+          path: test-results/
+  dependency-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      # Intentionally blocking while inherited high/critical advisories remain.
+      - run: pnpm audit --audit-level high
