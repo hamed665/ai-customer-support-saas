@@ -17,13 +17,18 @@ The upstream lockfile resolves 885 dependency entries in this environment. `pnpm
 | next | Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used | >=16.3.3 | https://github.com/advisories/GHSA-2xp9-vwfh-vxw4 |
 | next | Next.js: Remote Code Execution in next/og ImageResponse | >=16.3.6 | https://github.com/advisories/GHSA-vcvr-r3jv-pc5j |
 
+## Current remediation result
+
+The frozen dependency graph was refreshed with Next.js 16.4.2, next-auth 5.0.0-beta.32 / Auth.js core 0.41.3, Blob 2.8.x, KaTeX 0.18.x and documented compatible transitive patches. Current `pnpm audit --json`: **0 critical, 0 high, 3 moderate, 1 low**, 856 records. The original table above is historical baseline evidence, not the current release state. See [remediation details](DEPENDENCY_REMEDIATION.md).
+
+Remaining findings: esbuild 0.18.20 in Drizzle migration tooling (moderate), OpenTelemetry core 1.30.1 via Vercel telemetry (moderate), postcss-selector-parser 6.0.10 via Tailwind typography (moderate), and KaTeX 0.16.47 via Streamdown math (low). Major transitive API changes were not forced merely to reduce counts. The audit gate still rejects high/critical findings.
+
 ## Release gates
 
-1. Upgrade affected Next.js and transitive libraries using current advisory guidance and rerun full compatibility tests.
-2. Resolve Auth.js beta findings; the audit reports no patched next-auth version for some findings. The demo's exact public-route exception does not resolve authentication-library vulnerabilities elsewhere in the application.
-3. Rerun package audits after remediation. The CI security job intentionally fails for unresolved high/critical advisories.
-4. Review deployment-specific exploitability and configure only disposable services before any upstream integration test.
-5. Implement server-side identity, authorization and persistence before replacing synthetic fixtures with any real data.
+1. Resolve remaining findings and review deployment-specific exploitability before using the complete upstream backend.
+2. Clear BotID SDK redistribution terms and exercise original chat/storage/auth integrations with dedicated disposable services.
+3. Implement server-side identity, authorization, persistence and privacy controls before introducing real data.
+4. The independent static artifact is a synthetic demonstration only: allowlisted client inputs and React runtime, full applicable notices, no original server/provider SDK, and CSP `connect-src 'none'`. Static isolation does not establish backend readiness.
 
 ## License review
 
@@ -31,7 +36,7 @@ The repository's own LICENSE states Copyright 2024 Vercel, Inc. and Apache Licen
 
 `pnpm licenses list --json` primarily reports MIT/Apache/ISC/BSD packages. It also reports LGPL-3.0-or-later (`@img/sharp-libvips-linux-x64`), MPL-2.0 (`lightningcss` and its native binding) and CC-BY-4.0 (`caniuse-lite`). These components keep their own notices and obligations; the root project's license does not relicense them.
 
-Two package metadata entries have **Unknown** license: `botid` and `khroma`. The installed botid package has no license field or top-level LICENSE file. Treat commercial-use and redistribution clearance as unresolved; do not assume Apache permission covers these packages. This is a release blocker requiring authoritative upstream terms or removal/replacement and compatibility testing. No package tarball or node_modules is committed or redistributed.
+Two package metadata entries originally reported **Unknown** license: `botid` and `khroma`. khroma is now verified MIT from its authoritative source, with the full notice preserved under `licenses/`; see THIRD_PARTY_NOTICES.md. BotID remains unresolved. The installed botid package has no license field or top-level LICENSE file. Treat commercial-use and redistribution clearance as unresolved; do not assume Apache permission covers BotID. This is a release blocker requiring authoritative upstream terms or removal/replacement and compatibility testing. No package tarball or node_modules is committed or redistributed.
 
 This is an initial inventory, not a completed dependency-license clearance. See `license-inventory.json` for the generated list. No service account was created and no paid terms were accepted.
 

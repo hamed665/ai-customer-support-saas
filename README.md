@@ -2,7 +2,7 @@
 
 A portfolio extension of [Vercel Chatbot](https://github.com/vercel/chatbot), developed by Hamed Minaei. Adds an interactive support workspace with English, Arabic and Persian interfaces, source-backed knowledge lookup, and explicit human takeover.
 
-**Status: local portfolio prototype, not production-ready.** The new workspace uses deterministic keyword retrieval and synthetic in-memory data. It does not call an LLM. The upstream AI chat application remains available separately and requires its own services. Known inherited dependency vulnerabilities block public deployment; see [Security](#security).
+**Status: synthetic portfolio prototype, not production-ready.** The new workspace uses deterministic keyword retrieval and synthetic in-memory data. It does not call an LLM. The upstream AI chat application remains available separately and requires its own services. The isolated static client can be built separately; the full backend still requires license clearance and disposable-service integration testing. See [Security](#security).
 
 ## Architecture
 
@@ -64,9 +64,10 @@ Do not configure a production database, Smart Visions environment, customer acco
 - The client-side agent identity is deliberately simulated. It cannot authenticate operators or authorize customer access.
 - Knowledge citations identify local fixtures, not independently verified external facts.
 - There is no automated outbound messaging, customer import or persistent transcript storage in the added workspace.
-- **Do not deploy publicly:** the initial upstream lockfile audit reports 6 critical, 32 high, 55 moderate and 12 low advisory entries. These are package-manager counts, not an exploitability assessment. Details and remediation gates are in [the security review](docs/support/SECURITY_REVIEW.md). The CI security job is intentionally blocking while high/critical findings remain.
+- The remediated lockfile audit reports **0 critical, 0 high, 3 moderate and 1 low** entries. The high/critical CI gate remains enabled. These package-manager counts do not prove exploitability or security. See [the security review](docs/support/SECURITY_REVIEW.md).
+- Full backend redistribution remains blocked by unresolved BotID SDK license terms. The separate static build allowlists only the support client, engine, fixtures and React runtime, preserves their notices, and rejects backend/provider SDK inputs. Its CSP disables network connections. It does not deploy the original chat application.
 
-Production work requires dependency remediation, server-side business authorization, real agent identity, durable storage, rate limits, privacy/retention controls, and integration tests for the actual model/provider and handoff channel.
+Production work requires resolving remaining dependency and license findings, server-side business authorization, real agent identity, durable storage, rate limits, privacy/retention controls, and integration tests for the actual model/provider and handoff channel.
 
 ## Testing
 
@@ -79,15 +80,17 @@ pnpm test:support:smoke
 pnpm exec playwright install --with-deps chromium
 pnpm test:support:e2e
 pnpm audit --audit-level high
+pnpm build:support:static
+pnpm test:support:static
 ```
 
-The 18 policy tests exercise multilingual citations, business isolation, ambiguity, unsupported questions, handoff suppression, agent ownership, lifecycle transitions and validation. The smoke test starts the built server, checks the public demo and verifies that the existing root still redirects to authentication. Five Playwright cases cover the main flow, RTL, responsive overflow and screenshots at 320/768/1024/1440 pixels.
+The 18 policy tests exercise multilingual citations, business isolation, ambiguity, unsupported questions, handoff suppression, agent ownership, lifecycle transitions and validation. The smoke test starts the built server, checks the public demo, and verifies authentication redirects for the existing root and malformed bearer headers. Five Playwright cases cover the main flow, RTL, responsive overflow and screenshots at 320/768/1024/1440 pixels.
 
 [Baseline and verification results](docs/support/VERIFICATION.md) distinguish passing checks from blocked browser verification. `.github/workflows/support-workspace.yml` runs these checks without external credentials and uploads browser results. The inherited upstream E2E suite remains separate and service-dependent; it has not been represented as passing.
 
 ## Demo
 
-Follow [the repeatable walkthrough](docs/support/DEMO.md). Live hosting is blocked by the security findings. All five browser cases passed in GitHub Actions. Actual screenshots are stored in `docs/support/screenshots/` (320/768/1024/1440px). Local Chromium installation remains unavailable. No mock image is presented as an application screenshot.
+Follow [the repeatable walkthrough](docs/support/DEMO.md). The static hosting workflow is prepared; a deployed URL is not yet verified. To preview its output locally, run `pnpm build:support:static` then `python3 -m http.server 3197 --bind 127.0.0.1 --directory dist-demo` and open `/support-demo/`. Six static browser cases include the existing five UI checks plus CSP network blocking and reload reset. GitHub Pages deploys only after tests and the security gate pass on main. All five browser cases passed in GitHub Actions. Actual screenshots are stored in `docs/support/screenshots/` (320/768/1024/1440px). Local Chromium installation remains unavailable. No mock image is presented as an application screenshot.
 
 ![Support workspace — actual CI browser capture](docs/support/screenshots/support-1440.png)
 
@@ -95,6 +98,6 @@ Follow [the repeatable walkthrough](docs/support/DEMO.md). Live hosting is block
 
 Based on `vercel/chatbot` commit `c2f8235e1f3ea903ad8b7f61447c4f74164b5c58`, upstream commit date 2026-07-08. The complete upstream Git history and original [Apache 2.0 license notice](LICENSE) are retained. Upstream code remains Copyright 2024 Vercel, Inc.
 
-Hamed Minaei's additions: `app/support-demo/**`, `lib/support/**`, support tests and scripts, support CI workflow and `docs/support/**`. Modified upstream files: `app/layout.tsx` and `components/support/app-session-provider.tsx` (avoid auth-session requests on the synthetic demo only), `proxy.ts` (exact public synthetic demo route), `package.json` (verification scripts), `.env.example` (optional-service guidance), and this README. The original README is preserved in `docs/UPSTREAM_README.md`. No upstream authorship or contribution dates have been rewritten.
+Hamed Minaei's additions: `app/support-demo/**`, `lib/support/**`, support tests and scripts, support CI workflows, `demo-static/**`, static build/browser verification and `docs/support/**`. Modified upstream files: `app/layout.tsx` and `components/support/app-session-provider.tsx` (avoid auth-session requests on the synthetic demo only), `proxy.ts` (exact public synthetic demo route), `package.json` / `pnpm-lock.yaml` (verification scripts and dependency remediation), `next.config.ts` (obsolete option removal), `components/ai-elements/reasoning.tsx` (Streamdown prop compatibility), `.env.example` (optional-service guidance), and this README. The original README is preserved in `docs/UPSTREAM_README.md`. No upstream authorship or contribution dates have been rewritten.
 
 These additions are licensed under Apache-2.0; dependency licenses remain their respective authors' licenses. This project is not endorsed by Vercel. See [NOTICE](NOTICE).

@@ -15,7 +15,12 @@ const server = spawn(
     port,
   ],
   {
-    env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
+    env: {
+      ...process.env,
+      AUTH_SECRET:
+        "synthetic-support-smoke-only-secret-not-a-service-credential",
+      NEXT_TELEMETRY_DISABLED: "1",
+    },
     stdio: ["ignore", "pipe", "pipe"],
   }
 );
@@ -62,8 +67,23 @@ try {
     307,
     "The public demo must not bypass existing auth routes"
   );
+  for (const authorization of ["Bearer %", "Bearer %ZZ", "Bearer"]) {
+    // biome-ignore lint/performance/noAwaitInLoops: Exercise each malformed authentication header independently.
+    const invalidToken = await fetch(`http://127.0.0.1:${port}/api/chat`, {
+      headers: { authorization },
+      redirect: "manual",
+    });
+    assert.equal(
+      invalidToken.status,
+      307,
+      `Malformed authentication must retain the guest redirect: ${authorization}`
+    );
+    assert.ok(
+      invalidToken.headers.get("location")?.includes("/api/auth/guest?")
+    );
+  }
   console.log(
-    "PASS: built /support-demo renders HTTP 200; existing root retains auth redirect."
+    "PASS: built demo renders HTTP 200; root and malformed bearer headers retain auth redirects."
   );
 } finally {
   server.kill("SIGTERM");
