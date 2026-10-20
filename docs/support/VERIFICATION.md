@@ -52,3 +52,11 @@ CI exposed harmless upstream auth-session requests on the public demo (MissingSe
 The historical failures above are retained as baseline records. Current local checks: full `pnpm check`, full TypeScript check, optimized Next build, HTTP demo/root/auth regression smoke, and static build pass. Malformed bearer values %, %ZZ and an empty bearer retain authentication redirects. Frozen-graph audit now reports **0 critical / 0 high / 3 moderate / 1 low**. The high/critical CI gate remains blocking. License inventory was regenerated; khroma MIT was verified from source, BotID clearance for the full backend remains unresolved.
 
 The static artifact contains 17 allowlisted inputs (own client/engine/fixtures and React runtime), original and runtime license notices, no backend/provider SDK, and a network-blocking CSP. New static-browser isolation coverage and deployment are not yet verified; remote results will be recorded after CI. No live model, real operator transport, production account or full upstream service integration was tested. See DEPENDENCY_REMEDIATION.md for compatibility decisions.
+
+## Confirmed static deployment — 2026-10-20
+
+Remediation PR #1 was merged with original ancestry preserved. PR checks 39332801656 and 39332801764 passed; post-merge main checks 39333048622 (Next workspace), 39333048694 (full lint) and 39333048647 (static browser tests plus deployment) also passed. This supersedes the earlier dependency-security failure and unpublished-demo status; full-backend license and integration gates still apply.
+
+The static job passed all 18 engine tests and 6 Chromium cases, including CSP network rejection and ephemeral-state reset. The Next workspace job passed its 5 browser cases, full TypeScript/build/HTTP smoke. The audited graph remains 0 critical, 0 high, 3 moderate and 1 low; no high/critical check was bypassed.
+
+Live URL: https://hamed665.github.io/ai-customer-support-saas/support-demo/ . A direct browser visit on 2026-10-20 confirmed the deployed workspace and a delivery answer with its source link. `screenshots/support-live.jpg` is that actual hosted-site capture. The artifact does not include the original chat backend, BotID/auth/AI/storage SDKs or any live model. It is a deterministic synthetic client demonstration, not an operational SaaS.
