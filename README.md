@@ -90,7 +90,7 @@ The 18 policy tests exercise multilingual citations, business isolation, ambigui
 
 ## Demo
 
-Follow [the repeatable walkthrough](docs/support/DEMO.md). The static hosting workflow is prepared; a deployed URL is not yet verified. To preview its output locally, run `pnpm build:support:static` then `python3 -m http.server 3197 --bind 127.0.0.1 --directory dist-demo` and open `/support-demo/`. Six static browser cases include the existing five UI checks plus CSP network blocking and reload reset. GitHub Pages deploys only after tests and the security gate pass on main. All five browser cases passed in GitHub Actions. Actual screenshots are stored in `docs/support/screenshots/` (320/768/1024/1440px). Local Chromium installation remains unavailable. No mock image is presented as an application screenshot.
+Follow [the repeatable walkthrough](docs/support/DEMO.md). **[Open the live synthetic demo](https://hamed665.github.io/ai-customer-support-saas/support-demo/).** GitHub Pages deployment run 39333048647 succeeded and the live citation flow was checked in a browser. To preview its output locally, run `pnpm build:support:static` then `python3 -m http.server 3197 --bind 127.0.0.1 --directory dist-demo` and open `/support-demo/`. Six static browser cases include the existing five UI checks plus CSP network blocking and reload reset. GitHub Pages deploys only after tests and the security gate pass on main. All five browser cases passed in GitHub Actions. Actual screenshots are stored in `docs/support/screenshots/` (320/768/1024/1440px). Local Chromium installation remains unavailable. No mock image is presented as an application screenshot.
 
 ![Support workspace — actual CI browser capture](docs/support/screenshots/support-1440.png)
 
