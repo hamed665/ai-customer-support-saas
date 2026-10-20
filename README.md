@@ -1,5 +1,11 @@
 # Customer Support Workspace
 
+**[Hamed Minaei](https://github.com/hamed665) · Project maintainer & integration engineer**
+
+**My engineering scope:** Multilingual inbox (EN/AR/FA), business metrics, cited retrieval and human handoff.
+
+[My contributions & implementation evidence](MY_CONTRIBUTIONS.md) · [Implementation PR](https://github.com/hamed665/ai-customer-support-saas/pull/1) · [Architecture](#architecture) · [Testing](#testing)
+
 A portfolio extension of [Vercel Chatbot](https://github.com/vercel/chatbot), developed by Hamed Minaei. Adds an interactive support workspace with English, Arabic and Persian interfaces, source-backed knowledge lookup, and explicit human takeover.
 
 **Status: synthetic portfolio prototype, not production-ready.** The new workspace uses deterministic keyword retrieval and synthetic in-memory data. It does not call an LLM. The upstream AI chat application remains available separately and requires its own services. The isolated static client can be built separately; the full backend still requires license clearance and disposable-service integration testing. See [Security](#security).
