@@ -86,7 +86,7 @@ Do not configure a production database, Smart Visions environment, customer acco
 - The client-side agent identity is deliberately simulated. It cannot authenticate operators or authorize customer access.
 - Knowledge citations identify local fixtures, not independently verified external facts.
 - There is no automated outbound messaging, customer import or persistent transcript storage in the added workspace.
-- The remediated lockfile audit reports **0 critical, 0 high, 3 moderate and 1 low** entries. The high/critical CI gate remains enabled. These package-manager counts do not prove exploitability or security. See [the security review](docs/support/SECURITY_REVIEW.md).
+- The recorded lockfile audit found **0 critical, 0 high, 3 moderate and 1 low** entries at the documented review checkpoint. Rerun the audit before release; the high/critical CI gate remains enabled. These package-manager counts do not prove exploitability or security. See [the security review](docs/support/SECURITY_REVIEW.md).
 - Full backend redistribution remains blocked by unresolved BotID SDK license terms. The separate static build allowlists only the support client, engine, fixtures and React runtime, preserves their notices, and rejects backend/provider SDK inputs. Its CSP disables network connections. It does not deploy the original chat application.
 
 Production work requires resolving remaining dependency and license findings, server-side business authorization, real agent identity, durable storage, rate limits, privacy/retention controls, and integration tests for the actual model/provider and handoff channel.
