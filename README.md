@@ -10,6 +10,20 @@ A portfolio extension of [Vercel Chatbot](https://github.com/vercel/chatbot), de
 
 **Status: synthetic portfolio prototype, not production-ready.** The new workspace uses deterministic keyword retrieval and synthetic in-memory data. It does not call an LLM. The upstream AI chat application remains available separately and requires its own services. The isolated static client can be built separately; the full backend still requires license clearance and disposable-service integration testing. See [Security](#security).
 
+## Project at a glance
+
+A multilingual support interface with cited policy lookup and explicit human handoff.
+
+[Live demo](https://hamed665.github.io/ai-customer-support-saas/support-demo/) · [Walkthrough](docs/support/DEMO.md) · [Verification](docs/support/VERIFICATION.md)
+
+| Area | Implementation |
+| --- | --- |
+| Interface | EN/AR/FA inbox, metrics and RTL layouts in app/support-demo. |
+| Decision logic | Immutable lifecycle transitions and scoped policy retrieval in lib/support/engine.ts. |
+| Foundation | Vercel Chatbot supplies the original chat application; the support demo runs separately in browser memory. |
+
+[Setup](#installation) · [Configuration](#configuration) · [Tests](#testing) · [Demo](#demo) · [Attribution](#attribution)
+
 ## Architecture
 
 | Layer | Responsibility |
@@ -40,6 +54,8 @@ The new workflow is isolated at `/support-demo`. It is not yet integrated with t
 Prerequisites: Node.js 24 and pnpm 10.32.1 (declared in `package.json`).
 
 ```bash
+git clone https://github.com/hamed665/ai-customer-support-saas.git
+cd ai-customer-support-saas
 pnpm install --frozen-lockfile --ignore-scripts
 pnpm demo:support
 ```
@@ -92,7 +108,7 @@ pnpm test:support:static
 
 The 18 policy tests exercise multilingual citations, business isolation, ambiguity, unsupported questions, handoff suppression, agent ownership, lifecycle transitions and validation. The smoke test starts the built server, checks the public demo, and verifies authentication redirects for the existing root and malformed bearer headers. Five Playwright cases cover the main flow, RTL, responsive overflow and screenshots at 320/768/1024/1440 pixels.
 
-[Baseline and verification results](docs/support/VERIFICATION.md) distinguish passing checks from blocked browser verification. `.github/workflows/support-workspace.yml` runs these checks without external credentials and uploads browser results. The inherited upstream E2E suite remains separate and service-dependent; it has not been represented as passing.
+[Baseline and verification results](docs/support/VERIFICATION.md) record the policy, build, HTTP and CI browser checks, including their execution scope. `.github/workflows/support-workspace.yml` runs these checks without external credentials and uploads browser results. The inherited upstream E2E suite remains separate and service-dependent; it has not been represented as passing.
 
 ## Demo
 
